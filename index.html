@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link
+      href="https://www.arvancloud.ir/css/static-pages-2.5.6.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="//DOMAIN/favicon.ico" />
+    <title></title>
+  </head>
+  <body>
+    <section
+      class="error-section error-section--waiting error-section--ltr error-section--hide"
+      id="en"
+    >
+      <div class="container">
+        <div class="error-section__wrapper error-section__wrapper--waiting">
+          <div class="error-section__information">
+            <h1 class="error-section__title"></h1>
+            <h2
+              class="error-section__subtitle error-section__subtitle--waiting"
+            >
+              Transferring to the website...
+            </h2>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section
+      class="error-section error-section--waiting error-section--hide"
+      id="fa"
+    >
+      <div class="container">
+        <div class="error-section__wrapper error-section__wrapper--waiting">
+          <div class="error-section__information">
+            <h1 class="error-section__title"></h1>
+            <h2
+              class="error-section__subtitle error-section__subtitle--waiting"
+            >
+              در حال انتقال به سایت مورد نظر هستید...
+            </h2>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- <script>
+      var _this = this;
+
+      var showPage = function showPage() {
+        var errorPage;
+        var headTitleElement = document.getElementsByTagName("title");
+
+        if (isTehranTimezone()) {
+          errorPage = document.getElementById("fa");
+        } else {
+          errorPage = document.getElementById("en");
+        }
+
+        var pageTitle = errorPage.getElementsByClassName(
+          "error-section__title"
+        )[0].textContent;
+        headTitleElement[0].innerHTML = pageTitle;
+        errorPage.classList.remove("error-section--hide");
+      };
+
+      var isTehranTimezone = function isTehranTimezone() {
+        try {
+          var intlName =
+            window.Intl.DateTimeFormat().resolvedOptions().timeZone;
+          if (intlName) {
+            return intlName.toLowerCase().includes("tehran");
+          }
+        } catch (e) {}
+
+        var now = new Date();
+        return now.toString().toLowerCase().includes("iran");
+      };
+
+      var getRandomInt = function getRandomInt(min, max) {
+        return Math.floor(Math.random() * Math.floor(max - min)) + min;
+      };
+
+      showPage();
+    </script> -->
+    <!-- <script type="text/javascript">
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * Math.floor(max - min)) + min;
+      }
+
+      var _0x4541 = ["amd", "function", /*...*/ "length"];
+      (function (_0x37209d, _0x298640) {
+        var _0x3f7362 = function (_0xdf143a) {
+          while (--_0xdf143a) {
+            _0x37209d["push"](_0x37209d["shift"]());
+          }
+        };
+        _0x3f7362(++_0x298640);
+      })(_0x4541, 0x127);
+
+      var hash = E(E(_0x2d84("0x1")));
+
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          document.cookie =
+            "__arcsjs=" +
+            encodeURIComponent(hash) +
+            "; Max-Age=9000; Path=/; Domain=" +
+            encodeURIComponent("mfa.ir") +
+            "";
+          location.reload();
+        }, getRandomInt(2000, 3000));
+      });
+    </script> -->
+  </body>
+</html>

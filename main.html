@@ -1,0 +1,2799 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Application Register</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="57x57"
+      href="/static/images/favicon/apple-touch-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="60x60"
+      href="/static/images/favicon/apple-touch-icon-60x60.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="/static/images/favicon/apple-touch-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="/static/images/favicon/apple-touch-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="/static/images/favicon/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="/static/images/favicon/apple-touch-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="/static/images/favicon/apple-touch-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="/static/images/favicon/apple-touch-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/static/images/favicon/apple-touch-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/static/images/favicon/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/static/images/favicon/android-chrome-192x192.png"
+      sizes="192x192"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/static/images/favicon/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/static/images/favicon/favicon-16x16.png"
+      sizes="16x16"
+    />
+    <link
+      rel="mask-icon"
+      href="/static/images/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png" />
+    <meta name="theme-color" content="#41b392" />
+    <script src="/static/inspinia/js/jquery-3.1.1.min.js?v=10.07.1"></script>
+
+    <link
+      href="/static/inspinia/css/bootstrap.min.css?v=10.07.1"
+      rel="stylesheet"
+    />
+    <link href="/static/inspinia/css/animate.css?v=10.07.1" rel="stylesheet" />
+    <link
+      href="/static/theme/font-awesome/css/font-awesome.min.css?v=10.07.1"
+      rel="stylesheet"
+    />
+
+    <link href="/static/inspinia/css/style.css?v=10.07.1" rel="stylesheet" />
+
+    <link href="/static/lib/select2/select2.css?v=10.07.1" rel="stylesheet" />
+    <link
+      href="/static/lib/select2/select2-override.css?v=10.07.1"
+      rel="stylesheet"
+    />
+
+    <link
+      href="/static/inspinia/css/plugins/sweetalert/sweetalert.css?v=10.07.1"
+      rel="stylesheet"
+    />
+
+    <script src="/static/inspinia/js/bootstrap.min.js?v=10.07.1"></script>
+    <script src="/static/inspinia/js/inspinia.js?v=10.07.1"></script>
+    <script src="/static/inspinia/js/plugins/validate/jquery.validate.min.js?v=10.07.1"></script>
+
+    <script>
+      var GLOBAL_MAX_FILE_SIZE = 512000;
+    </script>
+
+    <script>
+      function readURL(input, img) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            $(img).attr("src", e.target.result);
+          };
+
+          reader.onloadend = function () {
+            $(img).attr("src", reader.result);
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      function getFilesize(fileInput) {
+        var sizeinbytes;
+        if (window.ActiveXObject) {
+          var fso = new ActiveXObject("Scripting.FileSystemObject");
+          var filepath = fileInput.value;
+          var thefile = fso.getFile(filepath);
+          sizeinbytes = thefile.size;
+        } else {
+          if (fileInput.files.length > 0) {
+            sizeinbytes = fileInput.files[0].size;
+          }
+        }
+
+        return sizeinbytes;
+      }
+
+      function resetFormElement(e) {
+        e.wrap("<form>").closest("form").get(0).reset();
+        e.unwrap();
+        if (e.parent().find("img").length > 0) {
+          var img = e.parent().find("img").first();
+          img.remove();
+        }
+      }
+
+      function checkImageType(fileTypeStr, thisFile) {
+        var class_attr = thisFile.attr("class");
+        if (!class_attr.includes("extra_file")) {
+          if ($.inArray(fileTypeStr, ["JPG", "JPEG", "jpg", "jpeg"]) == -1) {
+            var attr = thisFile.attr("id");
+            var errorSpan = document.getElementById(attr + "typeError");
+            if (errorSpan == null) {
+              var x = document.createElement("SPAN");
+              var t = document.createTextNode(
+                "Uploaded file extension is not valid. Please upload only jpeg format"
+              );
+              x.setAttribute("class", "help-block m-b-none");
+              x.setAttribute("style", "color: #ff0000");
+              x.setAttribute("id", attr + "typeError");
+              x.appendChild(t);
+              var selected_div = thisFile.closest('div[class="col-sm-7"]');
+              selected_div.append(x);
+            }
+            return 1;
+          } else {
+            return 0;
+          }
+        } else {
+          return 0;
+        }
+      }
+
+      function validate_image(file, show = true) {
+        var ext = $(file).val().split(".").pop().toLowerCase();
+        var flag = checkImageType(ext, $(file));
+        var size = getFilesize(file);
+
+        //  if (size > GLOBAL_MAX_FILE_SIZE || flag) {
+        //$(file).parents(".form-group").addClass("has-error");
+        //
+        //    resetFormElement($(file));
+        //      return;
+        //    }
+        var selector = $(file).attr("name") + "_cache_key";
+
+        var img;
+        if ($(file).parent().find("img").length > 0) {
+          img = $(file).parent().find("img").first();
+        } else {
+          img = $("<img class='preview-img ibox-content text-center' />");
+          $(file).after(img);
+        }
+        if (flag) {
+          $(file).val("");
+        }
+        if (show) {
+          readURL(file, img);
+          $(img).height(200);
+        }
+      }
+
+      $(document).ready(function () {
+        $("form img[src='/static/images/base/default-user.png']").each(
+          function () {
+            $(this).parents(".form-group").addClass("has-error");
+          }
+        );
+
+        $("input[type=file]").change(function () {
+          var ext = $(this).val().split(".").pop().toLowerCase();
+          var flag = checkImageType(ext, $(this));
+          var size = getFilesize(this);
+          if (size > GLOBAL_MAX_FILE_SIZE || flag) {
+            $(this).parents(".form-group").addClass("has-error");
+            resetFormElement($(this));
+            return;
+          } else {
+            $(this).parents(".form-group").removeClass("has-error");
+          }
+          var img;
+          if ($(this).parent().find("img").length > 0) {
+            img = $(this).parent().find("img").first();
+          } else {
+            img = $("<img class='preview-img ibox-content text-center' />");
+            $(this).after(img);
+          }
+          has_error = $(this).parents(".form-group").hasClass("has-error");
+          is_extra = $(this).attr("id").includes("extra");
+          if (!has_error && is_extra) {
+            readURL(this, img);
+            $(img).height(200);
+          }
+        });
+      });
+    </script>
+
+    <script>
+      var alert_keyboard = "Please, set English as the keyboard language";
+      var alert_only_english_letter =
+        "Please enter only english alphabetical letters.";
+      var alert_invalid_charachter = "This character is not allowed";
+    </script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#internet-submit").on("click", function () {
+          swal(
+            {
+              title: "Are you sure for final verification?",
+              text: "After the final verification, you cannot edit your information.",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Proceed",
+              cancelButtonText: "Cancel",
+              closeOnConfirm: false,
+              closeOnCancel: true,
+            },
+            function (isConfirm) {
+              if (isConfirm) {
+                $("#register_form").submit();
+              }
+            }
+          );
+        });
+
+        $("#register-submit").on("click", function () {
+          swal(
+            {
+              title: "Are you sure for final verification?",
+              text: "After the final verification, you cannot edit your information.",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "Proceed",
+              cancelButtonText: "Cancel",
+              closeOnConfirm: false,
+              closeOnCancel: true,
+            },
+            function (isConfirm) {
+              if (isConfirm) {
+                $("#register_form").submit();
+              }
+            }
+          );
+        });
+      });
+    </script>
+    <script src="/static/inspinia/js/plugins/sweetalert/sweetalert.min.js?v=10.07.1"></script>
+
+    <script src="/static/lib/select2/select2.min.js?v=10.07.1"></script>
+
+    <script src="/static/inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js?v=10.07.1"></script>
+
+    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    </script>
+
+    <link href="/static/css/base/overwrite.css?v=10.07.1" rel="stylesheet" />
+
+    <link
+      href="/static/css/base/left_to_right.css?v=10.07.1"
+      rel="stylesheet"
+    />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js" %}" ></script>
+			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js" %}" ></script>
+		<![endif]-->
+  </head>
+
+  <script>
+    $(function () {
+      // Add refresh button after field (this can be done in the template as well)
+      $(".captcha_refresh").remove();
+      $("img.ecaptcha").after(
+        $(
+          '<a href="#void" class="btn btn-primary btn-circle captcha_refresh " style=""><i class="fa fa-refresh"></i></a> '
+        )
+      );
+
+      // Click-handler for the refresh-link
+      $(".captcha_refresh").click(function () {
+        var $form = $(this).parents("form");
+        var url =
+          location.protocol +
+          "//" +
+          window.location.hostname +
+          ":" +
+          location.port +
+          "/ecaptcha/refresh/";
+
+        // Make the AJAX-call
+        $.getJSON(url, {}, function (json) {
+          $form.find('input[name="captcha_0"]').val(json.key);
+          $form.find("img.ecaptcha").attr("src", json.image_url);
+        });
+
+        return false;
+      });
+    });
+  </script>
+
+  <body ondragstart="return false;" ondrop="return false;">
+    <div class="stage_wrapper">
+      <div class="stage" style="right: 49px">
+        <div id="vertical-timeline" class="vertical-container light-timeline">
+          <div class="vertical-timeline-block">
+            <div
+              class="vertical-timeline-icon-wrapper animated fadeOut infinite"
+              style="border-color: #41b393"
+            ></div>
+
+            <div class="vertical-timeline-icon navy-bg">
+              <i class="fa fa-briefcase"></i>
+            </div>
+
+            <div class="vertical-timeline-content">
+              <h4 style="font-weight: 600">Visa Eligibility</h4>
+            </div>
+          </div>
+
+          <div class="vertical-timeline-block">
+            <div class="vertical-timeline-icon blue-bg">
+              <i class="fa fa-file-text"></i>
+            </div>
+
+            <div class="vertical-timeline-content">
+              <h4 style="font-weight: 200">Application information</h4>
+            </div>
+          </div>
+
+          <div class="vertical-timeline-block">
+            <div class="vertical-timeline-icon lazur-bg">
+              <i class="fa fa-envelope"></i>
+            </div>
+
+            <div class="vertical-timeline-content">
+              <h4 style="font-weight: 200">Email Verification</h4>
+            </div>
+          </div>
+
+          <div class="vertical-timeline-block">
+            <div class="vertical-timeline-icon yellow-bg">
+              <i class="fa fa-coffee"></i>
+            </div>
+
+            <div class="vertical-timeline-content">
+              <h4 style="font-weight: 200">End of Submission</h4>
+            </div>
+          </div>
+
+          <div class="vertical-timeline-block">
+            <div class="vertical-timeline-icon lazur-bg">
+              <i class="fa fa-user-md"></i>
+            </div>
+
+            <div class="vertical-timeline-content">
+              <a href="/en/request/status/"
+                ><h4 style="font-weight: 200">Application Status</h4></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="position: relative; z-index: 9999">
+      <div class="carousel-caption back">
+        <h1 class="font-bold">New Application</h1>
+
+        <p style="letter-spacing: 13px">Visa Eligibility</p>
+      </div>
+    </div>
+    <div class="navbar-wrapper">
+      <nav
+        class="navbar navbar-default navbar-fixed-top animated fadeIn"
+        role="navigation"
+      >
+        <div class="container" style="height: 203px">
+          <div class="navbar-header page-scroll">
+            <button
+              type="button"
+              class="navbar-toggle collapsed"
+              data-toggle="collapse"
+              data-target="#navbar"
+              aria-expanded="false"
+              aria-controls="navbar"
+            >
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="http://e_visa.mfa.ir/">E-VISA</a>
+          </div>
+          <div class="navbar-header page-scroll exp">
+            <p class="navbar-brand-exp" href="#">Islamic Republic of Iran</p>
+            <p class="navbar-brand-exp" href="#">Ministry of Foreign Affairs</p>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right"></ul>
+
+            <ul class="nav navbar-nav navbar-right">
+              <a
+                href="/en/login/"
+                class="btn btn-primary btn-w-m btn-outline login-button"
+              >
+                <i class="fa fa-user"></i>
+                Login
+              </a>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+              <li>
+                <a
+                  class="active"
+                  href="/en/request/applyrequest/"
+                  title="English"
+                  >en</a
+                >
+              </li>
+
+              <li>
+                <a class="" href="/fa/request/applyrequest/" title="Persian"
+                  >fa</a
+                >
+              </li>
+
+              <li>
+                <a class="" href="/ar/request/applyrequest/" title="Arabic"
+                  >ar</a
+                >
+              </li>
+
+              <li>
+                <a class="" href="/de/request/applyrequest/" title="Deutsch"
+                  >de</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div
+      class="carousela animated fadeIn"
+      data-ride="carousela"
+      id="inSlider"
+      style="border-bottom: solid #41b393 5px"
+    >
+      <div class="carousel-inner">
+        <div class="item active">
+          <div class="overlayheader"></div>
+          <div class="header-back apply">&nbsp;</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="grey-section registerform">
+      <div class="wrapper wrapper-content" style="z-index: 10">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-10">
+                <div class="ibox">
+                  <div class="ibox-title">
+                    <h5>Application Register</h5>
+                  </div>
+                  <div class="ibox-content">
+                    <div class="wrapper wrapper-content">
+                      <div class="row">
+                        <div class="col-md-5"></div>
+                        <div
+                          class="col-md-7"
+                          style="text-align: center; color: #41b392"
+                        ></div>
+                      </div>
+
+                      <div class="row">
+                        <div
+                          class="col-md-5 animated fadeInLeft wow"
+                          style="padding-left: 0px; padding-right: 0px"
+                        >
+                          <div class="submission-guid">
+                            <h2 class="navy">
+                              <i
+                                class="fa fa-flag"
+                                style="margin: 5px; color: #41b392"
+                              ></i
+                              >Things that you should know before applying for
+                              visa:
+                            </h2>
+                            <ul
+                              class="margin-bottom-none padding-left-lg textleft"
+                            >
+                              <li>
+                                Persons who may have dual nationality should
+                                announce their nationality based on the travel
+                                documents/passport that they wish to carry.
+                              </li>
+                              <li>
+                                In case nationality printed on visa is
+                                incompatible with nationality printed on
+                                passport, visa will be null and void.
+                              </li>
+                              <li>
+                                An applicant may not be granted visa unless
+                                his/her passport is valid for at least six
+                                months.
+                              </li>
+                              <li>
+                                Please make sure the photo you wish to upload
+                                meets all the requirements.<span
+                                  class="under_link"
+                                  ><a
+                                    href="/en/request/digital_image_requirement/?title_name=photo"
+                                    target="_blank"
+                                    >Photo Standard Guide</a
+                                  ></span
+                                >
+                              </li>
+                              <li>
+                                Please make sure the passport copy you wish to
+                                upload meets all the requirements.
+                                <span class="under_link"
+                                  ><a
+                                    href="/en/request/digital_image_requirement/?title_name=passport"
+                                    target="_blank"
+                                    >Passport Copy Standard Guide</a
+                                  ></span
+                                >
+                              </li>
+                            </ul>
+                          </div>
+                          <div
+                            class="submission-guid-photo image-link"
+                            style="padding: 85px 32px"
+                          >
+                            <a href="/en/request/image_tools/">
+                              <div style="width: 100%">
+                                <img
+                                  src="/static/theme/img/image-tool.png"
+                                  alt=""
+                                  width="200"
+                                  style="margin: 0 auto; display: block"
+                                />
+                              </div>
+                              <h2 class="navy" style="text-align: center">
+                                Verify your photo and passport copy requirements
+                                using our Image Tool
+                              </h2>
+                            </a>
+                          </div>
+                        </div>
+                        <div class="col-md-1 register-form-gap"></div>
+                        <div class="col-md-6 animated fadeInRight wow">
+                          <form
+                            method="post"
+                            enctype="multipart/form-data"
+                            id="register_form"
+                            class="form-horizontal"
+                            novalidate=""
+                          >
+                            <input
+                              type="hidden"
+                              name="csrfmiddlewaretoken"
+                              value="1HP8L7jv9vOGRz3uKHJNcDaJqv8bH2GdBgKloqBDP0JdB3VR1nrtHM66Ax2Skls0"
+                            />
+                            <input
+                              type="hidden"
+                              id="translate_lang"
+                              value="en"
+                            />
+
+                            <div class="form-group">
+                              <label
+                                class="col-sm-3 control-label"
+                                style="margin-left: 0px"
+                                >Visa Type
+                                <span class="required_field">*</span>
+                              </label>
+
+                              <div class="col-sm-7">
+                                <select
+                                  name="visa_type"
+                                  class="select2_combo form-control"
+                                  required
+                                  data-toggle="&#39;tooltip&#39;"
+                                  data-placement="&#39;right&#39;"
+                                  =""
+                                  required
+                                  id="id_visa_type"
+                                >
+                                  <option value="" selected>
+                                    ------------
+                                  </option>
+
+                                  <option value="1">Entry</option>
+
+                                  <option value="11">Tourist</option>
+
+                                  <option value="21">Pilgrimage</option>
+
+                                  <option value="31">Diplomatic</option>
+
+                                  <option value="41">Service</option>
+
+                                  <option value="71">Transit</option>
+
+                                  <option value="81">Press</option>
+
+                                  <option value="101">Family</option>
+
+                                  <option value="121">Trading</option>
+
+                                  <option value="261">Family visit</option>
+
+                                  <option value="311">Tourist (Urgent)</option>
+                                </select>
+
+                                <span
+                                  class="help-block m-b-none help_span"
+                                ></span>
+
+                                <span
+                                  class="help-block m-b-none"
+                                  id="v-description"
+                                  style="color: #0e886f"
+                                ></span>
+                              </div>
+                              <div class="col-sm-2"></div>
+                            </div>
+
+                            <div class="form-group">
+                              <label
+                                class="col-sm-3 control-label"
+                                style="margin-left: 0px"
+                                >Nationality
+                                <span class="required_field">*</span>
+                              </label>
+
+                              <div class="col-sm-7">
+                                <select
+                                  name="nationality"
+                                  class="select2_combo form-control"
+                                  required
+                                  data-toggle="&#39;tooltip&#39;"
+                                  data-placement="&#39;right&#39;"
+                                  =""
+                                  required
+                                  id="id_nationality"
+                                >
+                                  <option value="" selected>
+                                    ------------
+                                  </option>
+
+                                  <option value="21">Afghanistan</option>
+
+                                  <option value="31">Aland Islands</option>
+
+                                  <option value="41">Albania</option>
+
+                                  <option value="51">Algeria</option>
+
+                                  <option value="61">American Samoa</option>
+
+                                  <option value="71">Andorra</option>
+
+                                  <option value="81">Angola</option>
+
+                                  <option value="91">Anguilla</option>
+
+                                  <option value="101">
+                                    Antigua and Barbuda
+                                  </option>
+
+                                  <option value="111">Argentina</option>
+
+                                  <option value="121">Armenia</option>
+
+                                  <option value="131">Aruba</option>
+
+                                  <option value="141">Australia</option>
+
+                                  <option value="151">Austria</option>
+
+                                  <option value="161">Azerbaijan</option>
+
+                                  <option value="171">Bahamas</option>
+
+                                  <option value="181">Bahrain</option>
+
+                                  <option value="191">Bangladesh</option>
+
+                                  <option value="201">Barbados</option>
+
+                                  <option value="211">Belarus</option>
+
+                                  <option value="221">Belgium</option>
+
+                                  <option value="231">Belize</option>
+
+                                  <option value="241">Benin</option>
+
+                                  <option value="251">Bermuda</option>
+
+                                  <option value="261">Bhutan</option>
+
+                                  <option value="271">Bolivia</option>
+
+                                  <option value="281">Bonaire</option>
+
+                                  <option value="291">
+                                    Bosnia and Herzegovina
+                                  </option>
+
+                                  <option value="301">Botswana</option>
+
+                                  <option value="311">Brazil</option>
+
+                                  <option value="331">Brunei</option>
+
+                                  <option value="341">Bulgaria</option>
+
+                                  <option value="351">Burkina Faso</option>
+
+                                  <option value="361">Burundi</option>
+
+                                  <option value="371">Cabo Verde</option>
+
+                                  <option value="381">Cambodia</option>
+
+                                  <option value="391">Cameroon</option>
+
+                                  <option value="401">Canada</option>
+
+                                  <option value="411">Cayman Islands</option>
+
+                                  <option value="421">
+                                    Central African Republic
+                                  </option>
+
+                                  <option value="431">Chad</option>
+
+                                  <option value="441">Channel Islands</option>
+
+                                  <option value="451">Chile</option>
+
+                                  <option value="461">China</option>
+
+                                  <option value="951">China (Hong Kong)</option>
+
+                                  <option value="1211">China (Macao)</option>
+
+                                  <option value="2381">China (Taiwan)</option>
+
+                                  <option value="471">Colombia</option>
+
+                                  <option value="481">Comoros</option>
+
+                                  <option value="491">Congo</option>
+
+                                  <option value="501">Cook Islands</option>
+
+                                  <option value="511">Costa Rica</option>
+
+                                  <option value="521">Cote dIvoire</option>
+
+                                  <option value="531">Croatia</option>
+
+                                  <option value="541">Cuba</option>
+
+                                  <option value="551">Curacao</option>
+
+                                  <option value="561">Cyprus</option>
+
+                                  <option value="571">Czech Republic</option>
+
+                                  <option value="2451">
+                                    Democratic Republic OF CONGO
+                                  </option>
+
+                                  <option value="581">Denmark</option>
+
+                                  <option value="591">Djibouti</option>
+
+                                  <option value="601">Dominica</option>
+
+                                  <option value="611">
+                                    Dominican Republic
+                                  </option>
+
+                                  <option value="621">Ecuador</option>
+
+                                  <option value="631">Egypt</option>
+
+                                  <option value="641">El Salvador</option>
+
+                                  <option value="651">Equatorial Guinea</option>
+
+                                  <option value="661">Eritrea</option>
+
+                                  <option value="671">Estonia</option>
+
+                                  <option value="681">Ethiopia</option>
+
+                                  <option value="691">Faeroe Islands</option>
+
+                                  <option value="701">Falkland Islands</option>
+
+                                  <option value="711">Fiji</option>
+
+                                  <option value="721">Finland</option>
+
+                                  <option value="731">France</option>
+
+                                  <option value="741">French Guiana</option>
+
+                                  <option value="751">French Polynesia</option>
+
+                                  <option value="761">Gabon</option>
+
+                                  <option value="771">Gambia</option>
+
+                                  <option value="781">Georgia</option>
+
+                                  <option value="791">Germany</option>
+
+                                  <option value="801">Ghana</option>
+
+                                  <option value="811">Gibraltar</option>
+
+                                  <option value="821">Greece</option>
+
+                                  <option value="831">Greenland</option>
+
+                                  <option value="841">Grenada</option>
+
+                                  <option value="851">Guadeloupe</option>
+
+                                  <option value="861">Guam</option>
+
+                                  <option value="871">Guatemala</option>
+
+                                  <option value="881">Guernsey</option>
+
+                                  <option value="891">Guinea</option>
+
+                                  <option value="901">Guinea-Bissau</option>
+
+                                  <option value="911">Guyana</option>
+
+                                  <option value="921">Haiti</option>
+
+                                  <option value="931">Holy See</option>
+
+                                  <option value="941">Honduras</option>
+
+                                  <option value="961">Hungary</option>
+
+                                  <option value="971">Iceland</option>
+
+                                  <option value="981">India</option>
+
+                                  <option value="991">Indonesia</option>
+
+                                  <option value="11">Iraq</option>
+
+                                  <option value="1001">Ireland</option>
+
+                                  <option value="1011">Isle of Man</option>
+
+                                  <option value="1021">Italy</option>
+
+                                  <option value="1031">Jamaica</option>
+
+                                  <option value="1041">Japan</option>
+
+                                  <option value="1051">Jersey</option>
+
+                                  <option value="1061">Jordan</option>
+
+                                  <option value="1071">Kazakhstan</option>
+
+                                  <option value="1081">Kenya</option>
+
+                                  <option value="2041">
+                                    Kingdom of Eswatini
+                                  </option>
+
+                                  <option value="1091">Kiribati</option>
+
+                                  <option value="1101">Kuwait</option>
+
+                                  <option value="1111">Kyrgyzstan</option>
+
+                                  <option value="1121">Laos</option>
+
+                                  <option value="1131">Latvia</option>
+
+                                  <option value="1141">Lebanon</option>
+
+                                  <option value="1151">Lesotho</option>
+
+                                  <option value="1161">Liberia</option>
+
+                                  <option value="1171">Libya</option>
+
+                                  <option value="1181">Liechtenstein</option>
+
+                                  <option value="1191">Lithuania</option>
+
+                                  <option value="1201">Luxembourg</option>
+
+                                  <option value="2361">Macedonia</option>
+
+                                  <option value="1221">Madagascar</option>
+
+                                  <option value="1231">Malawi</option>
+
+                                  <option value="1241">Malaysia</option>
+
+                                  <option value="1251">Maldives</option>
+
+                                  <option value="1261">Mali</option>
+
+                                  <option value="1271">Malta</option>
+
+                                  <option value="1281">Marshall Islands</option>
+
+                                  <option value="1291">Martinique</option>
+
+                                  <option value="1301">Mauritania</option>
+
+                                  <option value="1311">Mauritius</option>
+
+                                  <option value="1321">Mayotte</option>
+
+                                  <option value="1331">Mexico</option>
+
+                                  <option value="1341">Micronesia</option>
+
+                                  <option value="1351">Monaco</option>
+
+                                  <option value="1361">Mongolia</option>
+
+                                  <option value="1371">Montenegro</option>
+
+                                  <option value="1381">Montserrat</option>
+
+                                  <option value="1391">Morocco</option>
+
+                                  <option value="1401">Mozambique</option>
+
+                                  <option value="1411">Myanmar</option>
+
+                                  <option value="1421">Namibia</option>
+
+                                  <option value="1431">Nauru</option>
+
+                                  <option value="1441">Nepal</option>
+
+                                  <option value="1451">Netherlands</option>
+
+                                  <option value="1461">New Caledonia</option>
+
+                                  <option value="1471">New Zealand</option>
+
+                                  <option value="1481">Nicaragua</option>
+
+                                  <option value="1491">Niger</option>
+
+                                  <option value="1501">Nigeria</option>
+
+                                  <option value="1511">Niue</option>
+
+                                  <option value="1521">Norfolk Island</option>
+
+                                  <option value="1531">North Korea</option>
+
+                                  <option value="1541">
+                                    Northern Mariana Islands
+                                  </option>
+
+                                  <option value="1551">Norway</option>
+
+                                  <option value="1561">Oman</option>
+
+                                  <option value="1571">Pakistan</option>
+
+                                  <option value="1581">Palau</option>
+
+                                  <option value="1591">Panama</option>
+
+                                  <option value="1601">Papua New Guinea</option>
+
+                                  <option value="1611">Paraguay</option>
+
+                                  <option value="1621">Peru</option>
+
+                                  <option value="1631">Philippines</option>
+
+                                  <option value="1641">Pitcairn</option>
+
+                                  <option value="1651">Poland</option>
+
+                                  <option value="1661">Portugal</option>
+
+                                  <option value="1671">Puerto Rico</option>
+
+                                  <option value="1681">Qatar</option>
+
+                                  <option value="1701">
+                                    Republic of Moldova
+                                  </option>
+
+                                  <option value="1711">Reunion</option>
+
+                                  <option value="1721">Romania</option>
+
+                                  <option value="1731">
+                                    Russian Federation
+                                  </option>
+
+                                  <option value="1741">Rwanda</option>
+
+                                  <option value="1751">Saint Helena</option>
+
+                                  <option value="1761">
+                                    Saint Kitts and Nevis
+                                  </option>
+
+                                  <option value="1771">Saint Lucia</option>
+
+                                  <option value="1781">
+                                    Saint Pierre and Miquelon
+                                  </option>
+
+                                  <option value="1791">
+                                    Saint Vincent and the Grenadines
+                                  </option>
+
+                                  <option value="1801">Saint-Barthélemy</option>
+
+                                  <option value="1811">
+                                    Saint-Martin (French part)
+                                  </option>
+
+                                  <option value="1821">Samoa</option>
+
+                                  <option value="1831">San Marino</option>
+
+                                  <option value="1841">
+                                    Sao Tome and Principe
+                                  </option>
+
+                                  <option value="1851">Sark</option>
+
+                                  <option value="1861">Saudi Arabia</option>
+
+                                  <option value="1871">Senegal</option>
+
+                                  <option value="1881">Serbia</option>
+
+                                  <option value="2391">Serbia (Kosovo)</option>
+
+                                  <option value="1891">Seychelles</option>
+
+                                  <option value="1901">Sierra Leone</option>
+
+                                  <option value="1911">Singapore</option>
+
+                                  <option value="1921">Slovakia</option>
+
+                                  <option value="1931">Slovenia</option>
+
+                                  <option value="1941">Solomon Islands</option>
+
+                                  <option value="1951">Somalia</option>
+
+                                  <option value="1961">South Africa</option>
+
+                                  <option value="1691">South Korea</option>
+
+                                  <option value="1971">South Sudan</option>
+
+                                  <option value="1981">Spain</option>
+
+                                  <option value="1991">Sri Lanka</option>
+
+                                  <option value="2001">
+                                    State of Palestine
+                                  </option>
+
+                                  <option value="2441">Stateless</option>
+
+                                  <option value="2011">Sudan</option>
+
+                                  <option value="2021">Suriname</option>
+
+                                  <option value="2031">Svalbard</option>
+
+                                  <option value="2051">Sweden</option>
+
+                                  <option value="2061">Switzerland</option>
+
+                                  <option value="2071">
+                                    Syrian Arab Republic
+                                  </option>
+
+                                  <option value="2081">Tajikistan</option>
+
+                                  <option value="2091">Thailand</option>
+
+                                  <option value="2101">Timor-Leste</option>
+
+                                  <option value="2111">Togo</option>
+
+                                  <option value="2121">Tokelau</option>
+
+                                  <option value="2131">Tonga</option>
+
+                                  <option value="2141">
+                                    Trinidad and Tobago
+                                  </option>
+
+                                  <option value="2151">Tunisia</option>
+
+                                  <option value="2161">Turkiye</option>
+
+                                  <option value="2171">Turkmenistan</option>
+
+                                  <option value="2181">Tuvalu</option>
+
+                                  <option value="2191">Uganda</option>
+
+                                  <option value="2201">Ukraine</option>
+
+                                  <option value="2211">
+                                    United Arab Emirates
+                                  </option>
+
+                                  <option value="2221">United Kingdom</option>
+
+                                  <option value="2231">
+                                    United Republic of Tanzania
+                                  </option>
+
+                                  <option value="2241">
+                                    United States of America
+                                  </option>
+
+                                  <option value="2261">Uruguay</option>
+
+                                  <option value="2271">Uzbekistan</option>
+
+                                  <option value="2281">Vanuatu</option>
+
+                                  <option value="2291">Venezuela</option>
+
+                                  <option value="2301">Viet Nam</option>
+
+                                  <option value="2311">
+                                    Wallis and Futuna Islands
+                                  </option>
+
+                                  <option value="2321">Western Sahara</option>
+
+                                  <option value="2331">Yemen</option>
+
+                                  <option value="2341">Zambia</option>
+
+                                  <option value="2351">Zimbabwe</option>
+                                </select>
+
+                                <span
+                                  class="help-block m-b-none help_span"
+                                ></span>
+
+                                <span
+                                  class="help-block m-b-none"
+                                  id="n-description"
+                                  style="color: #0e886f"
+                                ></span>
+                              </div>
+                              <div class="col-sm-2"></div>
+                            </div>
+
+                            <div class="form-group">
+                              <label
+                                class="col-sm-3 control-label"
+                                style="margin-left: 0px"
+                                >Type of passport
+                                <span class="required_field">*</span>
+                              </label>
+
+                              <div class="col-sm-7">
+                                <select
+                                  name="passport_type"
+                                  class="select2_combo form-control"
+                                  required
+                                  data-toggle="&#39;tooltip&#39;"
+                                  data-placement="&#39;right&#39;"
+                                  =""
+                                  required
+                                  id="id_passport_type"
+                                >
+                                  <option value="" selected>---------</option>
+
+                                  <option value="1">Ordinary</option>
+
+                                  <option value="2">Service</option>
+
+                                  <option value="3">Diplomatic</option>
+
+                                  <option value="4">Travel Document</option>
+
+                                  <option value="5">Laissez-Passer</option>
+
+                                  <option value="7">Official</option>
+                                </select>
+
+                                <span
+                                  class="help-block m-b-none help_span"
+                                ></span>
+                              </div>
+                              <div class="col-sm-2"></div>
+                            </div>
+
+                            <div class="form-group">
+                              <label
+                                class="col-sm-3 control-label"
+                                style="margin-left: 0px"
+                                >Place of Issue
+                                <span class="required_field">*</span>
+                              </label>
+
+                              <div class="col-sm-7">
+                                <select
+                                  name="issuer_agent"
+                                  class="select2_combo form-control"
+                                  required
+                                  data-toggle="&#39;tooltip&#39;"
+                                  data-placement="&#39;right&#39;"
+                                  =""
+                                  required
+                                  id="id_issuer_agent"
+                                >
+                                  <option value="" selected>
+                                    ------------
+                                  </option>
+
+                                  <option value="11">
+                                    Imam Khomeini International Airport - Tehran
+                                  </option>
+
+                                  <option value="21">
+                                    Mashhad International Airport
+                                  </option>
+
+                                  <option value="41">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Dubai
+                                  </option>
+
+                                  <option value="61">
+                                    Embassy of the Islamic Republic of Iran- Abu
+                                    Dhabi
+                                  </option>
+
+                                  <option value="71">
+                                    Shiraz International Airport
+                                  </option>
+
+                                  <option value="81">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Singapore
+                                  </option>
+
+                                  <option value="101">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Ankara
+                                  </option>
+
+                                  <option value="111">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Erzurum
+                                  </option>
+
+                                  <option value="121">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Istanbul
+                                  </option>
+
+                                  <option value="131">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Trabzon
+                                  </option>
+
+                                  <option value="151">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Islamabad
+                                  </option>
+
+                                  <option value="161">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Peshawar
+                                  </option>
+
+                                  <option value="171">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Karachi
+                                  </option>
+
+                                  <option value="181">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Quetta
+                                  </option>
+
+                                  <option value="191">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Lahore
+                                  </option>
+
+                                  <option value="201">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Amman
+                                  </option>
+
+                                  <option value="211">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Bangkok
+                                  </option>
+
+                                  <option value="221">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Baghdad
+                                  </option>
+
+                                  <option value="231">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Basra
+                                  </option>
+
+                                  <option value="241">
+                                    Consulate General of the Islamic Republic of
+                                    Iran-Karbala
+                                  </option>
+
+                                  <option value="251">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Sulaymaniyah
+                                  </option>
+
+                                  <option value="261">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Erbil
+                                  </option>
+
+                                  <option value="271">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Najaf Ashraf
+                                  </option>
+
+                                  <option value="281">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Beirut
+                                  </option>
+
+                                  <option value="291">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Beijing
+                                  </option>
+
+                                  <option value="301">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Shanghai
+                                  </option>
+
+                                  <option value="311">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Guangzhou
+                                  </option>
+
+                                  <option value="321">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Pyongyang
+                                  </option>
+
+                                  <option value="331">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Tokyo
+                                  </option>
+
+                                  <option value="341">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Jakarta
+                                  </option>
+
+                                  <option value="351">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Dhaka
+                                  </option>
+
+                                  <option value="361">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Damascus
+                                  </option>
+
+                                  <option value="371">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Doha
+                                  </option>
+
+                                  <option value="381">
+                                    Embassy of the Islamic Republic of Iran-New
+                                    Delhi
+                                  </option>
+
+                                  <option value="391">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Mumbai
+                                  </option>
+
+                                  <option value="401">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Hyderabad
+                                  </option>
+
+                                  <option value="421">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Riyadh
+                                  </option>
+
+                                  <option value="431">
+                                    Consulate General of the Islamic Republic of
+                                    Iran-Jeddah
+                                  </option>
+
+                                  <option value="441">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Seoul
+                                  </option>
+
+                                  <option value="511">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Colombo
+                                  </option>
+
+                                  <option value="521">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Kuala Lumpur
+                                  </option>
+
+                                  <option value="531">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Kuwait
+                                  </option>
+
+                                  <option value="541">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Manila
+                                  </option>
+
+                                  <option value="551">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Muscat
+                                  </option>
+
+                                  <option value="571">
+                                    Consulate General of the Islamic Republic of
+                                    Iran-Hong Kong
+                                  </option>
+
+                                  <option value="581">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Hanoi
+                                  </option>
+
+                                  <option value="591">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Nicosia
+                                  </option>
+
+                                  <option value="601">
+                                    Embassy of the Islamic Republic of Iran-Baku
+                                  </option>
+
+                                  <option value="611">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Nakhchivan
+                                  </option>
+
+                                  <option value="621">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Bishkek
+                                  </option>
+
+                                  <option value="631">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Dushanbe
+                                  </option>
+
+                                  <option value="641">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Tashkent
+                                  </option>
+
+                                  <option value="651">
+                                    Embassy of the Islamic Republic of Iran -
+                                    Astana
+                                  </option>
+
+                                  <option value="661">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Aktau
+                                  </option>
+
+                                  <option value="671">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Almaty
+                                  </option>
+
+                                  <option value="681">
+                                    Consulate General of the Islamic Republic of
+                                    Iran-Merv
+                                  </option>
+
+                                  <option value="691">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Ashgabat
+                                  </option>
+
+                                  <option value="701">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Bandar Seri Begawan
+                                  </option>
+
+                                  <option value="711">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Yerevan
+                                  </option>
+
+                                  <option value="721">
+                                    Embassy of the Islamic Republic of Iran-Kiev
+                                  </option>
+
+                                  <option value="731">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Tbilisi
+                                  </option>
+
+                                  <option value="741">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Batumi
+                                  </option>
+
+                                  <option value="751">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Athens
+                                  </option>
+
+                                  <option value="761">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Stockholm
+                                  </option>
+
+                                  <option value="771">
+                                    Embassy of the Islamic Republic of Iran-Oslo
+                                  </option>
+
+                                  <option value="781">
+                                    Islamic Republic of Iran’s Mission-Geneva
+                                  </option>
+
+                                  <option value="791">
+                                    Embassy of the Islamic Republic of Iran-Bern
+                                  </option>
+
+                                  <option value="801">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Brussels
+                                  </option>
+
+                                  <option value="811">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Belgrade
+                                  </option>
+
+                                  <option value="821">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Frankfurt
+                                  </option>
+
+                                  <option value="831">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Munich
+                                  </option>
+
+                                  <option value="841">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Hamburg
+                                  </option>
+
+                                  <option value="851">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Berlin
+                                  </option>
+
+                                  <option value="861">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Budapest
+                                  </option>
+
+                                  <option value="871">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Bucharest
+                                  </option>
+
+                                  <option value="881">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Paris
+                                  </option>
+
+                                  <option value="891">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Prague
+                                  </option>
+
+                                  <option value="901">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Ljubljana
+                                  </option>
+
+                                  <option value="911">
+                                    Embassy of the Islamic Republic of Iran-Rome
+                                  </option>
+
+                                  <option value="921">
+                                    Consulate General of the Islamic Republic of
+                                    Iran-Milan
+                                  </option>
+
+                                  <option value="931">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Sofia
+                                  </option>
+
+                                  <option value="941">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Copenhagen
+                                  </option>
+
+                                  <option value="951">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Hague
+                                  </option>
+
+                                  <option value="961">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Lisbon
+                                  </option>
+
+                                  <option value="971">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Madrid
+                                  </option>
+
+                                  <option value="981">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Moscow
+                                  </option>
+
+                                  <option value="991">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Astrakhan
+                                  </option>
+
+                                  <option value="1001">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Kazan
+                                  </option>
+
+                                  <option value="1011">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Warsaw
+                                  </option>
+
+                                  <option value="1031">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Vienna-
+                                  </option>
+
+                                  <option value="1041">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Helsinki
+                                  </option>
+
+                                  <option value="1051">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Tirana
+                                  </option>
+
+                                  <option value="1061">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Zagreb
+                                  </option>
+
+                                  <option value="1081">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Sarajevo
+                                  </option>
+
+                                  <option value="1091">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Minsk
+                                  </option>
+
+                                  <option value="1101">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Addis Ababa
+                                  </option>
+
+                                  <option value="1111">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Abidjan
+                                  </option>
+
+                                  <option value="1121">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Accra
+                                  </option>
+
+                                  <option value="1131">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Algeria
+                                  </option>
+
+                                  <option value="1141">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Bamako
+                                  </option>
+
+                                  <option value="1151">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Antananarivo
+                                  </option>
+
+                                  <option value="1171">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Tunis
+                                  </option>
+
+                                  <option value="1181">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Harare
+                                  </option>
+
+                                  <option value="1201">
+                                    Embassy of the Islamic Republic of Iran- Dar
+                                    es Salaam
+                                  </option>
+
+                                  <option value="1211">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Dakar
+                                  </option>
+
+                                  <option value="1231">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Pretoria
+                                  </option>
+
+                                  <option value="1241">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Tripoli
+                                  </option>
+
+                                  <option value="1251">
+                                    Embassy of the Islamic Republic of
+                                    Iran-Freetown
+                                  </option>
+
+                                  <option value="1261">
+                                    Interests Section of the Islamic Republic of
+                                    Iran - Cairo
+                                  </option>
+
+                                  <option value="1271">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Conakry
+                                  </option>
+
+                                  <option value="1281">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Kinshasa
+                                  </option>
+
+                                  <option value="1291">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Abuja
+                                  </option>
+
+                                  <option value="1311">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Nairobi
+                                  </option>
+
+                                  <option value="1321">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Nouakchott
+                                  </option>
+
+                                  <option value="1331">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Niamey
+                                  </option>
+
+                                  <option value="1351">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Kampala
+                                  </option>
+
+                                  <option value="1361">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Canberra
+                                  </option>
+
+                                  <option value="1371">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Wellington
+                                  </option>
+
+                                  <option value="1401">
+                                    Interests Section of the Islamic Republic of
+                                    Iran - Washington
+                                  </option>
+
+                                  <option value="1411">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Managua
+                                  </option>
+
+                                  <option value="1421">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Mexico City
+                                  </option>
+
+                                  <option value="1431">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Havana
+                                  </option>
+
+                                  <option value="1441">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Brasilia
+                                  </option>
+
+                                  <option value="1461">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Bogotá
+                                  </option>
+
+                                  <option value="1471">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Caracas
+                                  </option>
+
+                                  <option value="1481">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Montevideo
+                                  </option>
+
+                                  <option value="1491">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Quito
+                                  </option>
+
+                                  <option value="1501">
+                                    Embassy of the Islamic Republic of Iran- La
+                                    Paz
+                                  </option>
+
+                                  <option value="1511">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Santiago
+                                  </option>
+
+                                  <option value="1541">
+                                    Bandar Abbas International Airport
+                                  </option>
+
+                                  <option value="1551">
+                                    Embassy of the Islamic Republic of
+                                    Iran-London
+                                  </option>
+
+                                  <option value="1561">Kish Airport</option>
+
+                                  <option value="1571">
+                                    Isfahan International Airport
+                                  </option>
+
+                                  <option value="1581">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Dublin
+                                  </option>
+
+                                  <option value="1591">
+                                    Tabriz International Airport
+                                  </option>
+
+                                  <option value="1601">
+                                    International Airport Bushehr
+                                  </option>
+
+                                  <option value="1611">
+                                    Orumiyeh International Airport
+                                  </option>
+
+                                  <option value="1621">
+                                    Qeshm International Airport
+                                  </option>
+
+                                  <option value="1631">
+                                    Kerman International Airport
+                                  </option>
+
+                                  <option value="1651">
+                                    Ahwaz International Airport
+                                  </option>
+
+                                  <option value="1671">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Buenos Aires
+                                  </option>
+
+                                  <option value="1681">
+                                    Larestan International Airport
+                                  </option>
+
+                                  <option value="1701">
+                                    Embassy of the Islamic Republic of Iran-
+                                    Ouagadougou
+                                  </option>
+
+                                  <option value="1711">
+                                    Embassy of the islamic Republic of Iran -
+                                    Windhoke
+                                  </option>
+
+                                  <option value="1721">
+                                    Consulate General of the Islamic Republic of
+                                    Iran- Aleppo
+                                  </option>
+
+                                  <option value="1731">
+                                    Consulate General of the Islamic Republic of
+                                    Iran - Kapan
+                                  </option>
+                                </select>
+
+                                <span class="help-block m-b-none help_span"
+                                  >The embassy or Consulate at which you wish to
+                                  either submit your documents or collect
+                                  visa.</span
+                                >
+                              </div>
+                              <div class="col-sm-2"></div>
+                            </div>
+
+                            <div class="form-group">
+                              <label
+                                class="col-sm-3 control-label"
+                                style="margin-left: 0px"
+                                >Security code
+                                <span class="required_field">*</span>
+                              </label>
+
+                              <div class="col-sm-7">
+                                <img
+                                  src="/ecaptcha/image/e3c9c30abeb599d38d1523c2081507b4107db6fd/"
+                                  alt="ecaptcha"
+                                  class="ecaptcha"
+                                />
+                                <input
+                                  type="hidden"
+                                  name="captcha_0"
+                                  value="e3c9c30abeb599d38d1523c2081507b4107db6fd"
+                                  class="form-control"
+                                  required
+                                  data-toggle="&#39;tooltip&#39;"
+                                  data-placement="&#39;right&#39;"
+                                  =""
+                                  required
+                                  id="id_captcha_0"
+                                /><input
+                                  type="text"
+                                  name="captcha_1"
+                                  class="form-control"
+                                  required
+                                  data-toggle="&#39;tooltip&#39;"
+                                  data-placement="&#39;right&#39;"
+                                  =""
+                                  required
+                                  id="id_captcha_1"
+                                  autocapitalize="off"
+                                  autocomplete="off"
+                                  autocorrect="off"
+                                  spellcheck="false"
+                                />
+
+                                <span
+                                  class="help-block m-b-none help_span"
+                                ></span>
+                              </div>
+                              <div class="col-sm-2"></div>
+                            </div>
+
+                            <div class="row button_holder">
+                              <div class="col-sm-3"></div>
+                              <div class="col-sm-7 button-wrapper">
+                                <button
+                                  type="button"
+                                  class="btn btn-primary btn-w-m btn-outline"
+                                  name="first_step_submit"
+                                  id="first_step_submit_btn"
+                                >
+                                  <i class="fa fa-save"></i>
+                                  &nbsp;&nbsp;Save and proceed
+                                </button>
+                              </div>
+                              <div class="col-sm-2"></div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2" style="margin-top: 70px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="navy-section testimonials animated fadeIn wow"
+      id="testimonials"
+      style="margin-top: 50px"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 xhide">
+            <h1 style="">What our users say</h1>
+
+            <div class="testimonials-text" style="">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="gray-section contact animated fadeIn wow"
+      id="contact"
+      style="margin-top: 0"
+    >
+      <div class="container">
+        <div class="row m-b-lg">
+          <div class="col-lg-12 text-center">
+            <div class="navy-line">&nbsp;</div>
+
+            <h1>Contact Us</h1>
+
+            <p>
+              If you have a question about your application or want to give us
+              your feedback, feel free to contact us by email or phone.
+            </p>
+          </div>
+        </div>
+
+        <div class="row m-b-lg">
+          <div class="col-lg-4 col-lg-offset-3">
+            <abbr class="fa fa-phone contact-icon" title="Phone">
+              <small>(France)</small>
+            </abbr>
+            (+33) 140 697960 <br />
+
+            <abbr class="fa fa-phone contact-icon" title="Phone">
+              <small>(Oman)</small>
+            </abbr>
+            (+968) 24 696944 <br />
+
+            <abbr class="fa fa-phone contact-icon" title="Phone">
+              <small>(UAE)</small>
+            </abbr>
+            (+9714) 34 44976
+          </div>
+
+          <div class="col-lg-3">
+            <address>
+              <a href="#"
+                ><img
+                  alt="iran-flag-symbol"
+                  src="/static/theme/img/evisa-en-logo.png"
+              /></a>
+            </address>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <a class="btn btn-outline btn-primary" href="mailto:evisa@mfa.ir"
+              >Send us mail</a
+            >
+
+            <p class="m-t-sm">Or follow us on social platform</p>
+
+            <ul class="list-inline social-icon">
+              <li>&nbsp;</li>
+              <li>&nbsp;</li>
+              <li>&nbsp;</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div
+            class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg features-text"
+          >
+            <p>
+              <strong> ©2023 eVisa-Ministry of Foreign Affairs </strong><br />
+              This site is managed by Evisa Department, Ministry of Foreign
+              Affairs | <a href="#">Privacy Policy </a> |
+              <a href="#">Terms and Conditions </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="modal"></div>
+  </body>
+
+  <script src="/static/js/base/submit_forms_csrf.js?v=10.07.1"></script>
+
+  <script src="/static/theme/js/wow.min.js?v=10.07.1"></script>
+
+  <script>
+    $(document).ready(function () {
+      var visa_desc_dict = {
+        101: `Visa for foreign men who are married to Iranian women, as well as their offspring, whose names are registered in the Iranian woman’s birth certificate. If the marriage has not been registered within the Iranian legal system yet, Entry Visa (Relatives) may be applied for.`,
+
+        261: `Foreign citizens intending to pay short visits to their Iranian relatives may apply for family visit visas by uploading their valid documents`,
+      }; // create an empty array
+
+      var nat_desc_dict = {
+        2221: `Tourism, Pilgrimage, and Medical Visa may be applied through travel agencies. Entry Visa may be applied by the host residing in Iran.`,
+      }; // create an empty array
+
+      $("#id_nationality").on("change", function (e) {
+        var nat_id = $("#id_nationality").val();
+        if (nat_id) {
+          if (nat_id in nat_desc_dict) {
+            $("#n-description").html(nat_desc_dict[nat_id]);
+            $("#n-description").show(500);
+          } else {
+            $("#n-description").hide(500);
+          }
+        } else {
+          $("#n-description").hide(500);
+        }
+      });
+
+      $("#id_visa_type").on("change", function (e) {
+        var visa_id = $("#id_visa_type").val();
+        if (visa_id) {
+          if (visa_id in visa_desc_dict) {
+            $("#v-description").html(visa_desc_dict[visa_id]);
+            $("#v-description").show(500);
+          } else {
+            $("#v-description").hide(500);
+          }
+        } else {
+          $("#v-description").hide(500);
+        }
+      });
+
+      $("#id_visa_type").trigger("change");
+
+      var $airport_list = [
+        "11",
+
+        "21",
+
+        "71",
+
+        "1521",
+
+        "1531",
+
+        "1541",
+
+        "1571",
+
+        "1591",
+
+        "1601",
+
+        "1611",
+
+        "1621",
+
+        "1631",
+
+        "1641",
+
+        "1651",
+
+        "1681",
+      ];
+      $("#first_step_submit_btn").on("click", function () {
+        var selected_agent = $("#id_issuer_agent").val();
+        var lang = "en";
+        var text = "";
+        var picture_error = $("#id_picture")
+          .parents(".form-group")
+          .hasClass("has-error");
+        var passport_error = $("#id_passport_image")
+          .parents(".form-group")
+          .hasClass("has-error");
+        var text_error = "";
+        if (picture_error) {
+          text_error +=
+            "Your uploaded file does not meet the required standard for digital image of photo." +
+            "\n";
+        }
+        if (passport_error) {
+          text_error +=
+            "Your uploaded file does not meet the required standard for digital image of passport.";
+        }
+        if (picture_error || passport_error) {
+          swal({
+            type: "error",
+            title: "",
+            text: text_error,
+            confirmButtonText: "Ok",
+          });
+        } else {
+          if (lang == "ar" || lang == "fa") {
+            text1 =
+              "<div style='padding: 10px 20px;background-color: antiquewhite;border-radius: 5px;color: #4e4e4e;text-align:right;'><h3>To apply for a Visa on Arrival, the following points should carefully be considered. </h3><ul><li>You must submit a hardcopy of Submission Notice to the Visa-On-Arrival counter at the airport. Submission Notice will be available when you have completed online visa application form.</li> <li>Citizens of foreign countries, who are entitled to obtain visas at border checkpoints, must pay visa fee in euros through banking terminals at the airport.</li><li>Refugee and Travel Document holder are not allowed to apply for a Visa on Arrival.</li></ul> </div></br> Are you sure?";
+          } else {
+            text1 =
+              "<div style='padding: 10px 20px;background-color: antiquewhite;border-radius: 5px;color: #4e4e4e;text-align:left;'><h3>To apply for a Visa on Arrival, the following points should carefully be considered. </h3><ul><li>You must submit a hardcopy of Submission Notice to the Visa-On-Arrival counter at the airport. Submission Notice will be available when you have completed online visa application form.</li> <li>Citizens of foreign countries, who are entitled to obtain visas at border checkpoints, must pay visa fee in euros through banking terminals at the airport.</li><li>Refugee and Travel Document holder are not allowed to apply for a Visa on Arrival.</li></ul> </div></br> Are you sure?";
+          }
+          if ($airport_list.indexOf(selected_agent) >= 0) {
+            swal(
+              {
+                title: "You choose an airport as Place of Issue",
+                html: true,
+                text: text1,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Continue",
+                cancelButtonText: "Cancel",
+                closeOnConfirm: false,
+                closeOnCancel: true,
+              },
+              function (isConfirm) {
+                if (isConfirm) {
+                  $("<input />")
+                    .attr("type", "hidden")
+                    .attr("name", "first_step_submit")
+                    .attr("value", "first_step_submit")
+                    .appendTo("#register_form");
+                  var register_form = $("#register_form");
+                  register_form.submit();
+                }
+              }
+            );
+          } else {
+            $("<input />")
+              .attr("type", "hidden")
+              .attr("name", "first_step_submit")
+              .attr("value", "first_step_submit")
+              .appendTo("#register_form");
+            var register_form = $("#register_form");
+            register_form.submit();
+          }
+        }
+      });
+
+      var $p_list = ["2451"];
+      $("#id_picture").on("change", function (e) {
+        $("#id_box_picture").empty();
+        $("#id_box_picture").show();
+
+        var $formdata = new FormData();
+        if ($("#id_picture").val() != "") {
+          $formdata.append("image", $("#id_picture")[0].files[0]);
+          var $name = $("#id_picture")[0].files[0]["name"];
+          $(".photo_error #image-tools-loading").show();
+
+          var selected_nationality = $("#id_nationality").val();
+          if ($p_list.indexOf(selected_nationality) < 0) {
+            validate_image(this);
+            $(img).height(200);
+            var has_error = $(this)
+              .parents(".form-group")
+              .hasClass("has-error");
+            if (!has_error) {
+              $.ajax({
+                type: "POST",
+                url: "/en/api/photo/12345".replace(/12345/, $name),
+                data: $formdata,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                  $(".photo_error #image-tools-loading").hide();
+                  $("#id_picture")
+                    .parents(".form-group")
+                    .removeClass("has-error");
+                  if (typeof response == "object") {
+                    if ($("#id_picture").val()) {
+                      $("#id_picturetypeError").remove();
+                      $("#id_picture")
+                        .parents(".form-group")
+                        .addClass("has-error");
+                      var $html = "<div class='alert alert-danger'>";
+                      for (var x in response.image) {
+                        $html += "<li>" + response.image[x] + "</li>";
+                      }
+                      $html += "</div>";
+                      $("#id_box_picture").append($html);
+                    }
+                  } else {
+                    $("#id_picturetypeError").remove();
+                    $("#id_picture")
+                      .parents(".form-group")
+                      .removeClass("has-error");
+                    var $html =
+                      "<div class='alert alert-success'>" +
+                      "<i class='fa fa-check ' id='photoStateIcon' style='color: #41b392;font-size: 20px'></i><i>";
+                    $html += response;
+                    $html += "</i></div>";
+                    $("#id_box_picture").append($html);
+                  }
+                },
+                error: function (response) {
+                  if (response.status == 403) {
+                    $(".photo_error #image-tools-loading").hide();
+                    var $html =
+                      "<div class='alert alert-danger'>" +
+                      "<p><b>Too Many Requests</b></p>" +
+                      "<p>Sorry! Rate limit exceeded. Try again later.</p></div>";
+                    $("#id_box_picture").append($html);
+                  }
+                },
+              });
+            }
+          }
+        }
+      });
+
+      $("#id_passport_image").on("change", function (e) {
+        $("#id_box_passport").empty();
+        $("#id_box_passport").show();
+
+        var $formdata = new FormData();
+        if ($("#id_passport_image").val() != "")
+          $formdata.append("image", $("#id_passport_image")[0].files[0]);
+        var $name = $("#id_passport_image")[0].files[0]["name"];
+        $(".passport_error #image-tools-loading").show();
+
+        var selected_nationality = $("#id_nationality").val();
+        if ($p_list.indexOf(selected_nationality) < 0) {
+          validate_image(this);
+          var has_error = $(this).parents(".form-group").hasClass("has-error");
+          if (!has_error) {
+            $.ajax({
+              type: "POST",
+              url: "/en/api/passport/12345".replace(/12345/, $name),
+              data: $formdata,
+              cache: false,
+              processData: false,
+              contentType: false,
+              success: function (response) {
+                $("#id_passport_image")
+                  .parents(".form-group")
+                  .removeClass("has-error");
+                $(".passport_error #image-tools-loading").hide();
+                if (typeof response == "object") {
+                  if ($("#id_passport_image").val()) {
+                    $("#id_passport_imagetypeError").remove();
+                    $("#id_passport_image")
+                      .parents(".form-group")
+                      .addClass("has-error");
+                    var $html = "<div class='alert alert-danger'>";
+                    for (var x in response.image) {
+                      $html += "<li>" + response.image[x] + "</li>";
+                    }
+                    $html += "</div>";
+                    $("#id_box_passport").append($html);
+                  }
+                } else {
+                  $("#id_passport_imagetypeError").remove();
+                  $("#id_passport_image")
+                    .parents(".form-group")
+                    .removeClass("has-error");
+                  var $html =
+                    "<div class='alert alert-success'>" +
+                    "<i class='fa fa-check ' id='photoStateIcon' style='color: #41b392;font-size: 20px'></i><i>";
+                  $html += response;
+                  $html += "</i></div>";
+                  $("#id_box_passport").append($html);
+                }
+              },
+              error: function (response) {
+                if (response.status == 403) {
+                  $(".passport_error #image-tools-loading").hide();
+                  var $html =
+                    "<div class='alert alert-danger'>" +
+                    "<p><b>Too Many Requests</b></p>" +
+                    "<p>Sorry! Rate limit exceeded. Try again later.</p></div>";
+                  $("#id_box_passport").append($html);
+                }
+              },
+            });
+          }
+        }
+      });
+
+      $("#id_nationality").on("change", function (e) {
+        $("#id_box_picture").hide();
+        $("#id_box_passport").hide();
+      });
+
+      var hasExpireDateErr = false;
+      var hasIssueDateErr = false;
+      var hasBirthDateErr = false;
+      var hasPassportNumberErr = false;
+      var form = $("form#register_form");
+      $("#second_step_submit_btn").on("click", function (e) {
+        $("#last_preview").attr(
+          "src",
+          $("#id_picture").parent().find(".preview-img").attr("src")
+        );
+        var name = $(this).attr("name");
+        form.validate().settings.ignore = ":disabled";
+        var hasError =
+          hasIssueDateErr ||
+          hasExpireDateErr ||
+          hasBirthDateErr ||
+          hasPassportNumberErr;
+        if (hasError) {
+          return false;
+        }
+        // Start validation; Prevent form submission if false
+
+        verify_modal(form, name);
+      });
+
+      function verify_modal(form, name) {
+        $("#register_form").validate({
+          errorPlacement: function (error, element) {
+            element.before(error);
+          },
+          rules: {
+            confirm: {
+              equalTo: "#password",
+            },
+            phone_number: {
+              digits: true,
+            },
+            mobile: {
+              digits: true,
+            },
+            iran_phone_number: {
+              digits: true,
+            },
+            email: {
+              email: true,
+            },
+            birth_date: {
+              date: true,
+            },
+            expire_date: {
+              date: true,
+            },
+            passport_issue_date: {
+              date: true,
+            },
+          },
+        });
+        var visa_type;
+        var nationality;
+        var entry_option;
+        var issuer_agent;
+        var passport_type;
+        var is_urgent;
+        var float;
+        var country_extrafield;
+
+        if ($("#register_form").valid()) {
+          issuer_agent = $("input[name='issuer_agent_id']").val();
+          visa_type = $("select[name='visa_type']")
+            .children("option:selected")
+            .val();
+          nationality = $("select[name='nationality']")
+            .children("option:selected")
+            .val();
+          entry_option = $("select[name='entry_option']")
+            .children("option:selected")
+            .val();
+          country_extrafield = $("#country_extrafield_1").val();
+          passport_type = $("select[name='passport_type']")
+            .children("option:selected")
+            .val();
+          is_urgent = $("input[name='is_urgent']").is(":checked");
+          var lang = "en";
+          float = "right";
+          if (lang == "ar" || "fa") {
+            float = "left";
+          }
+
+          $("#verifyModal .modal-body").html("");
+          var fields = $(form).find("div.form-group");
+          var formFields = new Array();
+          var table = $("<table classs='table'>");
+          var div = $("<div class='placeOfIssue'>");
+
+          for (i = 0; i < fields.length; i++) {
+            //Check if in this form-group input type if not file type
+            if (
+              $(fields[i]).css("display") == "none" ||
+              $(fields[i]).find("img").length > 0
+            ) {
+              continue;
+            }
+            if ($(fields[i]).find("input[type=file]").length <= 0) {
+              var labelTxt = $(fields[i]).find("label.control-label").html();
+
+              var spanIndex = labelTxt.indexOf("<");
+
+              if (spanIndex != -1) {
+                labelTxt = labelTxt.substring(0, spanIndex);
+              }
+
+              var inputTxt =
+                $(fields[i]).find("input[type=text]").val() ||
+                $(fields[i]).find("input[type=email]").val() ||
+                $(fields[i]).find("textarea").val() ||
+                $(fields[i]).find("input[type=checkbox]").is(":checked") ||
+                $($(fields[i]).find("span.select2-chosen")[0]).text();
+
+              formFields.push({
+                label: labelTxt,
+                input: inputTxt,
+              });
+              if (inputTxt == true) {
+                inputTxt = "Yes";
+              } else if (inputTxt == false) {
+                inputTxt = "No";
+              }
+              var emailclass = "";
+              if (inputTxt.includes("@")) {
+                emailclass = "emailInput";
+              }
+              if (i % 2 == 0) {
+                table.append(
+                  "<tr><td style='font-size:15px;'class='" +
+                    emailclass +
+                    "'>" +
+                    labelTxt +
+                    "</td><td style='font-weight:700;' class='" +
+                    emailclass +
+                    "'>" +
+                    inputTxt +
+                    "</td>"
+                );
+              } else {
+                table.append(
+                  "<tr class='highlighted'><td style='font-size:15px' class='" +
+                    emailclass +
+                    "'>" +
+                    labelTxt +
+                    "</td><td style='font-weight:700;' class='" +
+                    emailclass +
+                    "'>" +
+                    inputTxt +
+                    "</td>"
+                );
+              }
+            }
+          }
+
+          div.append(
+            "<img src='/static/theme/img/issue.png' width='100' style='margin: auto 5px;float: " +
+              float +
+              "'><div><span style='font-size:15px;color:#666a6c;'>" +
+              $("#id_value_issuer_agent")
+                .parent()
+                .parent()
+                .find("label.control-label")
+                .clone()
+                .children()
+                .remove()
+                .end()
+                .text() +
+              "</span><span style='font-weight:700;color:#666a6c;    width: 50%;margin: 0px 20px;display: inline-table;'>" +
+              $("#id_value_issuer_agent").val() +
+              "</span><br>"
+          );
+          $.ajax({
+            type: "POST",
+            url: "/en/request/get_visa_fee/",
+            data: {
+              visa_type: visa_type,
+              nationality: nationality,
+              issuer: issuer_agent,
+              entry_option: entry_option,
+              is_urgent: is_urgent,
+              passport_type: passport_type,
+              country_extrafield: country_extrafield,
+            },
+            dataType: "json",
+            success: function (response) {
+              if (parseInt(response["visa_fee"]) == 0) {
+                div.append(
+                  "<div class='visa_free' id='visa_fee_display'><span style='font-size:15px;color:#666a6c;'>Visa Fee</span><span style='font-weight:700;color:#41b394;    width: 40%;margin: 10px 41px 10px 61px;display: inline-table;'>Free</span></div>"
+                );
+              }
+              if (parseInt(response["visa_fee"]) > 0) {
+                div.append(
+                  "<div class='visa_free' id='visa_fee_display'><span style='font-size:15px;color:#666a6c;'>Visa Fee</span><span style='font-weight:700;color:#41b394;    width: 40%;margin: 10px 41px 10px 61px;display: inline-table;'>" +
+                    response["visa_fee"] +
+                    "&nbsp" +
+                    response["currency_unit"] +
+                    "</span></div>"
+                );
+              }
+              div.append(
+                "<div><span style='font-size:15px;color:#666a6c;text-align: center;float: right;margin: 10px 0px 20px;background: rgba(0,0,0,0.03);padding: 6px;'>Your visa will be valid from the date of issuance of the visa for a total period of <span style='font-weight:700;'>" +
+                  response["max_validity"] +
+                  "</span> days. Your stay cannot exceeded <span style='font-weight:700;'>" +
+                  $("#id_duration").val() +
+                  "</span> days </span></div></div>"
+              );
+            },
+            error: function (response) {
+              if (response.status == 403) {
+                $("#visa_fee_display").html("");
+                var $html =
+                  "<div class='alert alert-danger'>" +
+                  "<p><b>Too Many Requests</b></p>" +
+                  "<p>Sorry! Rate limit exceeded. Try again later.</p></div>";
+                $("#id_box_passport").append($html);
+              }
+              if (response.status == 500) {
+                var visa_block = $("#visa_fee_display");
+                if (visa_block.length) $("#visa_fee_display").hide();
+              }
+            },
+          });
+
+          $("#verifyModal .modal-body").append(table);
+          $("#verifyModal .modal-body").append(div);
+          $("#verifyModal").modal();
+        } else {
+          $(".error").first().next().focus();
+
+          swal(
+            {
+              title:
+                "WARNING: The application could not be submitted. Please check the form carefully for errors!",
+              type: "error",
+              confirmButtonText: "Ok",
+              showCancelButton: false,
+              closeOnConfirm: true,
+              animation: "slide-from-top",
+            },
+            function () {
+              $("html, body").animate(
+                { scrollTop: $(".error").first().next().offset().top - 120 },
+                "slow"
+              );
+            }
+          );
+        }
+      }
+
+      $(function () {
+        $("#finish-form-submit").on("click", function () {
+          $("<input />")
+            .attr("type", "hidden")
+            .attr("name", $(this).attr("name"))
+            .attr("value", $(this).attr("name"))
+            .appendTo("#register_form");
+          var register_form = $("#register_form");
+          register_form.submit();
+          $("#register_form").submit();
+        });
+      });
+
+      function scrollToAnchor(aid) {
+        var aTag = $("#" + aid + "");
+        $("html,body").animate({ scrollTop: aTag.offset().top }, "slow");
+      }
+
+      $("#step12").click(function () {
+        scrollToAnchor("step2");
+      });
+      $("#step23").click(function () {
+        scrollToAnchor("step3");
+      });
+      $("#step34").click(function () {
+        scrollToAnchor("step4");
+      });
+      // Activate WOW.js plugin for animation on scrol
+      new WOW().init();
+
+      $('form :input[type!="hidden"]').each(function (i) {
+        $(this).attr("tabindex", i + 1);
+      });
+
+      $("select.select2_combo").select2({
+        selectOnBlur: true, //auto select when select2 dropdown is closed
+      });
+      if ("en" == "fa") {
+        $(".select2-input").attr("lang", "fa");
+      }
+    });
+  </script>
+
+  <script src="/static/js/base/FarsiType.js?v=10.07.1"></script>
+</html>
